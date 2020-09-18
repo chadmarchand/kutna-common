@@ -5,7 +5,7 @@ import kotlin.random.Random
 typealias Id = Long
 private typealias IdCompanion = Long.Companion
 
-fun IdCompanion.generateRandom() = Random.nextLong()
+fun IdCompanion.random() = Random.nextLong()
 
 val IdCompanion.DEFAULT_ID: Id
     get() = -1L
