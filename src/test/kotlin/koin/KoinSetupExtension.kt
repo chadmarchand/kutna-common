@@ -1,4 +1,4 @@
-package koin
+package com.chadmarchand.koin
 
 import org.junit.jupiter.api.extension.BeforeEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
@@ -8,7 +8,7 @@ import org.koin.core.context.stopKoin
 import org.koin.core.module.Module
 
 
-class KoinSetupExtension(private val koinModule: Module) : BeforeEachCallback {
+open class KoinSetupExtension(private val koinModule: Module) : BeforeEachCallback {
     override fun beforeEach(context: ExtensionContext) {
         stopKoinIfActive()
         setupKoin(context)

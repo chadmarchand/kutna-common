@@ -8,11 +8,12 @@ buildscript {
     ext {
         kutnaCommonGroupId = 'com.chadmarchand'
         kutnaCommonArtifactId = 'kutna-common'
-        kutnaCommonVersion = '1.0.6'
+        kutnaCommonVersion = '1.0.13'
+        kutnaCommonVcsRepoUrl = 'https://github.com/chadmarchand/kutna-common.git'
 
-        vcsRepoUrl = 'https://github.com/chadmarchand/kutna-common.git'
-
+        jvmVersion = '1.8'
         koinVersion = '2.1.6'
+        junitVersion = '5.4.2'
     }
 }
 
@@ -32,13 +33,13 @@ repositories {
 group "$kutnaCommonGroupId"
 version "$kutnaCommonVersion"
 
-sourceCompatibility = 1.8
+sourceCompatibility = "$jvmVersion"
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
 
     implementation "org.koin:koin-core:$koinVersion"
     implementation "org.koin:koin-core-ext:$koinVersion"
@@ -49,15 +50,39 @@ dependencies {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "$jvmVersion"
 }
+
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "$jvmVersion"
+}
+
+configurations {
+    testArtifacts.extendsFrom testCompile
+}
+
+task incrementPatchVersion << {
+    String patchVersion = version.substring(version.lastIndexOf('.') + 1)
+    String majorAndMinorVersion = version.substring(0, version.lastIndexOf('.') + 1)
+    int newPatchVersion = patchVersion.toInteger() + 1
+
+    String updatedBuildFileText = buildFile
+            .getText()
+            .replaceFirst(
+                    "kutnaCommonVersion = '$kutnaCommonVersion'",
+                    "kutnaCommonVersion = '"+majorAndMinorVersion+newPatchVersion+"'"
+            )
+    buildFile.setText(updatedBuildFileText)
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
+}
+
+task testJar(type: Jar, dependsOn: classes) {
+    from sourceSets.test.output
+    classifier "test"
 }
 
 javadoc.failOnError = false
@@ -69,6 +94,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 artifacts {
     archives sourcesJar
     archives javadocJar
+    testArtifacts testJar
 }
 
 def pomConfig = {
@@ -87,7 +113,7 @@ def pomConfig = {
     }
 
     scm {
-        url "$vcsRepoUrl"
+        url "$kutnaCommonVcsRepoUrl"
     }
 }
 
@@ -97,6 +123,9 @@ publishing {
             from components.java
             artifact sourcesJar {
                 classifier "sources"
+            }
+            artifact testJar {
+                classifier "test"
             }
             artifact javadocJar {
                 classifier "javadoc"
@@ -108,7 +137,7 @@ publishing {
                 def root = asNode()
                 root.appendNode('description', 'Common types and utils used with the Kutna framework for Kotlin')
                 root.appendNode('name', "$kutnaCommonArtifactId")
-                root.appendNode('url', "$vcsRepoUrl")
+                root.appendNode('url', "$kutnaCommonVcsRepoUrl")
                 root.children().last() + pomConfig
             }
         }
@@ -124,7 +153,7 @@ bintray {
         repo = "$kutnaCommonArtifactId"
         name = "$kutnaCommonArtifactId"
         licenses = ['MIT']
-        vcsUrl = "$vcsRepoUrl"
+        vcsUrl = "$kutnaCommonVcsRepoUrl"
         version {
             name = "$kutnaCommonVersion"
             desc = "$kutnaCommonVersion"
