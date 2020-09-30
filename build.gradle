@@ -8,7 +8,7 @@ buildscript {
     ext {
         kutnaCommonGroupId = 'com.chadmarchand'
         kutnaCommonArtifactId = 'kutna-common'
-        kutnaCommonVersion = '1.0.4'
+        kutnaCommonVersion = '1.0.6'
 
         vcsRepoUrl = 'https://github.com/chadmarchand/kutna-common.git'
 
