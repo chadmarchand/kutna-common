@@ -8,9 +8,11 @@ buildscript {
     ext {
         kutnaCommonGroupId = 'com.chadmarchand'
         kutnaCommonArtifactId = 'kutna-common'
-        kutnaCommonVersion = '1.0.3'
+        kutnaCommonVersion = '1.0.4'
 
         vcsRepoUrl = 'https://github.com/chadmarchand/kutna-common.git'
+
+        koinVersion = '2.1.6'
     }
 }
 
@@ -34,7 +36,16 @@ sourceCompatibility = 1.8
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
+
+    implementation "org.koin:koin-core:$koinVersion"
+    implementation "org.koin:koin-core-ext:$koinVersion"
+    testImplementation "org.koin:koin-test:$koinVersion"
+    implementation "org.koin:koin-java:2.1.0-alpha-2"
+
+    implementation 'org.springframework:spring-context:5.2.3.RELEASE'
 }
 
 compileKotlin {
