@@ -2,9 +2,9 @@
 
 A Kotlin library that contains common utilities for the Kutna framework.
  
-## Increment minor version in gradle file
+## Increment patch version in gradle file
 
-`./gradlew incrementMinorVersion`
+`./gradlew incrementPatchVersion`
 
 ## Upload artifacts and publish to bintray
 
