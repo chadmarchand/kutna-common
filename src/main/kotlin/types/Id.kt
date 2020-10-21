@@ -1,4 +1,4 @@
-package com.chadmarchand.common.types
+package com.chadmarchand.kutna.common.types
 
 import kotlin.random.Random
 
