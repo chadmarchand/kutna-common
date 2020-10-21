@@ -1,31 +1,31 @@
 buildscript {
     repositories {
         mavenLocal()
-        mavenCentral()
-        jcenter()
     }
 
     ext {
         kutnaCommonGroupId = 'com.chadmarchand.kutna'
         kutnaCommonArtifactId = 'kutna-common'
-        kutnaCommonVersion = '1.0.14'
+        kutnaCommonVersion = '1.0.18'
         kutnaCommonVcsRepoUrl = 'https://github.com/chadmarchand/kutna-common.git'
 
         jvmVersion = '1.8'
-        koinVersion = '2.1.6'
-        junitVersion = '5.4.2'
+    }
+
+    dependencies {
+        classpath 'com.chadmarchand.kutna:kutna-gradle-plugin:1.0.+'
     }
 }
 
 plugins {
-    id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.3.72'
     id 'com.jfrog.bintray' version '1.8.5'
     id 'maven-publish'
 }
 
+apply plugin: com.chadmarchand.kutna.gradle.KutnaGradlePlugin
+
 repositories {
-    mavenLocal()
     mavenCentral()
     jcenter()
 }
@@ -33,28 +33,8 @@ repositories {
 group "$kutnaCommonGroupId"
 version "$kutnaCommonVersion"
 
-sourceCompatibility = "$jvmVersion"
-
 dependencies {
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-
-    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
-
-    implementation "org.koin:koin-core:$koinVersion"
-    implementation "org.koin:koin-core-ext:$koinVersion"
-    testImplementation "org.koin:koin-test:$koinVersion"
-    implementation "org.koin:koin-java:2.1.0-alpha-2"
-
     implementation 'org.springframework:spring-context:5.2.3.RELEASE'
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "$jvmVersion"
-}
-
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "$jvmVersion"
 }
 
 configurations {
