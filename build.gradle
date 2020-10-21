@@ -6,7 +6,7 @@ buildscript {
     ext {
         kutnaCommonGroupId = 'com.chadmarchand.kutna'
         kutnaCommonArtifactId = 'kutna-common'
-        kutnaCommonVersion = '1.0.18'
+        kutnaCommonVersion = '1.0.19'
         kutnaCommonVcsRepoUrl = 'https://github.com/chadmarchand/kutna-common.git'
     }
 
@@ -16,7 +16,6 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
     id 'com.jfrog.bintray' version '1.8.5'
     id 'maven-publish'
 }
