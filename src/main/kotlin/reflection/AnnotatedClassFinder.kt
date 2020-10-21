@@ -1,4 +1,4 @@
-package com.chadmarchand.reflection
+package com.chadmarchand.kutna.common.reflection
 
 import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
