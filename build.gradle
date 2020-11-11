@@ -1,26 +1,24 @@
 buildscript {
     repositories {
         mavenLocal()
+        jcenter()
     }
 
     ext {
         kutnaCommonGroupId = 'com.chadmarchand.kutna'
         kutnaCommonArtifactId = 'kutna-common'
-        kutnaCommonVersion = '1.0.19'
+        kutnaCommonVersion = '1.0.87'
         kutnaCommonVcsRepoUrl = 'https://github.com/chadmarchand/kutna-common.git'
+        kutnaCommonDescription = 'Common types and utils'
     }
 
     dependencies {
-        classpath 'com.chadmarchand.kutna:kutna-gradle-plugin:1.0.+'
+        classpath 'com.chadmarchand.kutna:kutna-gradle-plugin:1.0.85'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
     }
 }
 
-plugins {
-    id 'com.jfrog.bintray' version '1.8.5'
-    id 'maven-publish'
-}
-
-apply plugin: com.chadmarchand.kutna.gradle.KutnaGradlePlugin
+apply plugin: com.chadmarchand.kutna.gradle.KutnaPlugin
 
 repositories {
     mavenCentral()
@@ -29,14 +27,6 @@ repositories {
 
 group "$kutnaCommonGroupId"
 version "$kutnaCommonVersion"
-
-dependencies {
-    implementation 'org.springframework:spring-context:5.2.3.RELEASE'
-}
-
-configurations {
-    testArtifacts.extendsFrom testCompile
-}
 
 task incrementPatchVersion << {
     String patchVersion = version.substring(version.lastIndexOf('.') + 1)
@@ -52,78 +42,16 @@ task incrementPatchVersion << {
     buildFile.setText(updatedBuildFileText)
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-task testJar(type: Jar, dependsOn: classes) {
-    from sourceSets.test.output
-    classifier "test"
-}
-
-javadoc.failOnError = false
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-    testArtifacts testJar
-}
-
-def pomConfig = {
-    licenses {
-        license([:]) {
-            name "MIT License"
-            url "http://www.opensource.org/licenses/mit-license"
-            distribution "repo"
-        }
-    }
-    developers {
-        developer {
-            id 'chadmarchand'
-            name 'Chad Marchand'
-        }
-    }
-
-    scm {
-        url "$kutnaCommonVcsRepoUrl"
-    }
-}
-
-publishing {
-    publications {
-        mavenPublication(MavenPublication) {
-            from components.java
-            artifact sourcesJar {
-                classifier "sources"
-            }
-            artifact testJar {
-                classifier "test"
-            }
-            artifact javadocJar {
-                classifier "javadoc"
-            }
-            groupId "$kutnaCommonGroupId"
-            artifactId "$kutnaCommonArtifactId"
-            version "$kutnaCommonVersion"
-            pom.withXml {
-                def root = asNode()
-                root.appendNode('description', 'Common types and utils used with the Kutna framework for Kotlin')
-                root.appendNode('name', "$kutnaCommonArtifactId")
-                root.appendNode('url', "$kutnaCommonVcsRepoUrl")
-                root.children().last() + pomConfig
-            }
-        }
-    }
+task configurePublishing(type: com.chadmarchand.kutna.gradle.KutnaPublishingTask) {
+    publishedArtifactId = "$kutnaCommonArtifactId"
+    artifactVersion = "$kutnaCommonVersion"
+    artifactDescription = "$kutnaCommonDescription"
+    vcsRepoUrl = "$kutnaCommonVcsRepoUrl"
 }
 
 bintray {
-    user = System.getProperty('bintray.user')
-    key = System.getProperty('bintray.key')
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
     publications = ['mavenPublication']
     publish = true
 
@@ -139,3 +67,6 @@ bintray {
         }
     }
 }
+bintrayUpload.dependsOn configurePublishing
+bintrayUpload.dependsOn jar
+bintrayUpload.dependsOn testJar
