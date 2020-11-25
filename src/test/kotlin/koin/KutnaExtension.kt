@@ -7,15 +7,15 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.module.Module
 
-open class KutnaTestExtension(
+open class KutnaExtension(
     private val koinModules: List<Module>
 ) : BeforeEachCallback {
     override fun beforeEach(context: ExtensionContext) {
         stopKoinIfActive()
-        setupKoin(context)
+        setupKoin()
     }
 
-    private fun setupKoin(context: ExtensionContext) {
+    private fun setupKoin() {
         startKoin {
             modules(koinModules)
         }
