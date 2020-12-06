@@ -2,12 +2,15 @@ buildscript {
     repositories {
         mavenLocal()
         jcenter()
+        maven {
+            url 'https://dl.bintray.com/cmarchand/kutna-gradle-plugin'
+        }
     }
 
     ext {
         kutnaCommonGroupId = 'com.chadmarchand.kutna'
         kutnaCommonArtifactId = 'kutna-common'
-        kutnaCommonVersion = '1.0.87'
+        kutnaCommonVersion = '1.0.88'
         kutnaCommonVcsRepoUrl = 'https://github.com/chadmarchand/kutna-common.git'
         kutnaCommonDescription = 'Common types and utils'
     }
