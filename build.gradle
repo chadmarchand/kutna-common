@@ -10,13 +10,13 @@ buildscript {
     ext {
         kutnaCommonGroupId = 'com.chadmarchand.kutna'
         kutnaCommonArtifactId = 'kutna-common'
-        kutnaCommonVersion = '1.0.88'
+        kutnaCommonVersion = '1.0.101'
         kutnaCommonVcsRepoUrl = 'https://github.com/chadmarchand/kutna-common.git'
         kutnaCommonDescription = 'Common types and utils'
     }
 
     dependencies {
-        classpath 'com.chadmarchand.kutna:kutna-gradle-plugin:1.0.85'
+        classpath 'com.chadmarchand.kutna:kutna-gradle-plugin:1.0.102'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
     }
 }
@@ -52,24 +52,3 @@ task configurePublishing(type: com.chadmarchand.kutna.gradle.KutnaPublishingTask
     vcsRepoUrl = "$kutnaCommonVcsRepoUrl"
 }
 
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-    publications = ['mavenPublication']
-    publish = true
-
-    pkg {
-        repo = "$kutnaCommonArtifactId"
-        name = "$kutnaCommonArtifactId"
-        licenses = ['MIT']
-        vcsUrl = "$kutnaCommonVcsRepoUrl"
-        version {
-            name = "$kutnaCommonVersion"
-            desc = "$kutnaCommonVersion"
-            released  = new Date()
-        }
-    }
-}
-bintrayUpload.dependsOn configurePublishing
-bintrayUpload.dependsOn jar
-bintrayUpload.dependsOn testJar
