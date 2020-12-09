@@ -31,24 +31,9 @@ repositories {
 group "$kutnaCommonGroupId"
 version "$kutnaCommonVersion"
 
-task incrementPatchVersion << {
-    String patchVersion = version.substring(version.lastIndexOf('.') + 1)
-    String majorAndMinorVersion = version.substring(0, version.lastIndexOf('.') + 1)
-    int newPatchVersion = patchVersion.toInteger() + 1
-
-    String updatedBuildFileText = buildFile
-            .getText()
-            .replaceFirst(
-                    "kutnaCommonVersion = '$kutnaCommonVersion'",
-                    "kutnaCommonVersion = '"+majorAndMinorVersion+newPatchVersion+"'"
-            )
-    buildFile.setText(updatedBuildFileText)
-}
-
 task configurePublishing(type: com.chadmarchand.kutna.gradle.KutnaPublishingTask) {
     publishedArtifactId = "$kutnaCommonArtifactId"
     artifactVersion = "$kutnaCommonVersion"
     artifactDescription = "$kutnaCommonDescription"
     vcsRepoUrl = "$kutnaCommonVcsRepoUrl"
 }
-
