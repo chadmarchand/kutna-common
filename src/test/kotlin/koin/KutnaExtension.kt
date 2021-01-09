@@ -2,6 +2,7 @@ package com.chadmarchand.kutna.common.koin
 
 import org.junit.jupiter.api.extension.BeforeEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
+import org.koin.core.context.GlobalContext
 import org.koin.core.context.KoinContextHandler
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
@@ -22,7 +23,7 @@ open class KutnaExtension(
     }
 
     private fun stopKoinIfActive() {
-        val koin = KoinContextHandler.getOrNull()
+        val koin = GlobalContext.getOrNull()
         if (koin != null) {
             stopKoin()
         }
