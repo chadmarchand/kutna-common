@@ -10,13 +10,13 @@ buildscript {
     ext {
         kutnaCommonGroupId = 'com.chadmarchand.kutna'
         kutnaCommonArtifactId = 'kutna-common'
-        kutnaCommonVersion = '1.0.101'
+        kutnaCommonVersion = '1.0.102'
         kutnaCommonVcsRepoUrl = 'https://github.com/chadmarchand/kutna-common.git'
         kutnaCommonDescription = 'Common types and utils'
     }
 
     dependencies {
-        classpath 'com.chadmarchand.kutna:kutna-gradle-plugin:1.0.102'
+        classpath 'com.chadmarchand.kutna:kutna-gradle-plugin:1.0.104'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
     }
 }
